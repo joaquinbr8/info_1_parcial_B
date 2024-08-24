@@ -1,5 +1,5 @@
 import arcade
-import arcade.gui  #agregar la libreria fue la unica manera que me resulto, porque tengo un problema con mi version de arcade y no puedo actualizarla, me da error y muchas incompatibilidades , no pude arreglarlo asi que vi y con esta libreria me deja correr el codigogit
+import arcade.gui  #agregar la libreria fue la unica manera que me resulto, porque tengo un problema con mi version de arcade y no puedo actualizarla, me da error y muchas incompatibilidades , no pude arreglarlo asi que vi y con esta libreria me deja correr el codigo
 import json
 from tool import PencilTool, MarkerTool, SprayTool, EraserTool, BrushTool, CrayonTool
 

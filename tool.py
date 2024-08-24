@@ -1,33 +1,42 @@
 import arcade
 import random
+from typing import Protocol, List, Dict,Union
 
-class PencilTool:
+class Tool(Protocol):
+    name: str
+    def draw_traces(self, traces: List[Dict[str, Union[str, List[tuple]]]]):
+        pass
+
+    def get_name(self) -> str:
+        return self.name
+
+class PencilTool(Tool):
     name = "Pencil"
 
-    def draw_traces(self, traces):
+    def draw_traces(self, traces: List[Dict[str, Union[str, List[tuple]]]]):
         for trace in traces:
             if trace["tool"] == self.name:
                 arcade.draw_lines(trace["trace"], trace["color"], 2)
 
-class MarkerTool:
+class MarkerTool(Tool):
     name = "Marker"
 
     def __init__(self, width=10):
         self.width = width
 
-    def draw_traces(self, traces):
+    def draw_traces(self, traces: List[Dict[str, Union[str, List[tuple]]]]):
         for trace in traces:
             if trace["tool"] == self.name:
                 arcade.draw_line_strip(trace["trace"], trace["color"], self.width)
 
-class SprayTool:
+class SprayTool(Tool):
     name = "Spray"
 
     def __init__(self, radius=15, points=30):
         self.radius = radius
         self.points = points
 
-    def draw_traces(self, traces):
+    def draw_traces(self, traces: List[Dict[str, Union[str, List[tuple]]]]):
         for trace in traces:
             if trace["tool"] == self.name:
                 for x, y in trace["trace"]:
@@ -37,13 +46,13 @@ class SprayTool:
                         if offset_x**2 + offset_y**2 <= self.radius**2:
                             arcade.draw_point(x + offset_x, y + offset_y, trace["color"], 1)
 
-class EraserTool:
+class EraserTool(Tool):
     name = "Eraser"
 
     def __init__(self, size=15):
         self.size = size
 
-    def erase_trace(self, x, y, traces):
+    def erase_trace(self, x: int, y: int, traces: List[Dict[str, Union[str, List[tuple]]]]):
         erased_traces = []
         for trace in traces:
             trace_copy = trace.copy()
@@ -53,18 +62,18 @@ class EraserTool:
         traces.clear()
         traces.extend(erased_traces)
 
-    def draw_traces(self, traces):
+    def draw_traces(self, traces: List[Dict[str, Union[str, List[tuple]]]]):
         for trace in traces:
             if trace["tool"] == self.name:
                 arcade.draw_line_strip(trace["trace"], arcade.color.WHITE, self.size)
 
-class BrushTool:
+class BrushTool(Tool):
     name = "Brush"
 
     def __init__(self, width=8):
         self.width = width
 
-    def draw_traces(self, traces):
+    def draw_traces(self, traces: List[Dict[str, Union[str, List[tuple]]]]):
         for trace in traces:
             if trace["tool"] == self.name:
                 for x, y in trace["trace"]:
@@ -72,13 +81,13 @@ class BrushTool:
                     offset_y = random.randint(-self.width, self.width)
                     arcade.draw_circle_filled(x + offset_x, y + offset_y, self.width / 2, trace["color"])
 
-class CrayonTool:
+class CrayonTool(Tool):
     name = "Crayon"
 
     def __init__(self, width=4):
         self.width = width
 
-    def draw_traces(self, traces):
+    def draw_traces(self, traces: List[Dict[str, Union[str, List[tuple]]]]):
         for trace in traces:
             if trace["tool"] == self.name:
                 for x, y in trace["trace"]:
